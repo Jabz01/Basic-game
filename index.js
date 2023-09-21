@@ -1,32 +1,43 @@
 document.addEventListener("DOMContentLoaded", function() {
-    let winner = document.querySelector("#Win");
+    const WINNER = document.querySelector("#Win");
+    let PLAYER = document.querySelectorAll('.Player');
     let machineChoise = '';
     let output = '';
-    function theComputerDesicion() {
-      const numeroAleatorio = Math.floor(Math.random() * 3) + 1;
-      if (numeroAleatorio === 1) {
+    let machinePoint = 0;
+    let playerPoint = 0;
+    function getMachineChoise() {
+      const randomNumber = Math.floor(Math.random() * 3) + 1;
+      if (randomNumber === 1) {
         machineChoise = 'rock';
-        } else if (numeroAleatorio === 2) {
-          machineChoise = 'paper';
-          } else {
-            machineChoise = 'scissors';
-            };
-      return machineChoise;
-    };
-    document.querySelector("#Player").addEventListener("input", function() {
-      let playerSelection = this.value.toLowerCase();
-      theComputerDesicion();
-      if (playerSelection === 'rock' || playerSelection === 'paper' || playerSelection === 'scissors') { 
-      if (playerSelection === machineChoise) {
-        output = `It's a tie. the machine choose ${machineChoise}`;
-      } else if((playerSelection === 'rock' && machineChoise === 'scissors')
-               || (playerSelection === 'paper' && machineChoise === 'rock')
-               || (playerSelection === 'scissors' && machineChoise === 'paper')) {
-          output = `You win!. The machine choose ${machineChoise}`;
+      } else if (randomNumber === 2) {
+        machineChoise = 'paper';
       } else {
-        output = `The machine choose ${machineChoise}. you loose :(`;
+        machineChoise = 'scissors';
       };
-      };
-      winner.textContent = output;
+    };
+    
+    PLAYER.forEach((playerButton) => {
+      playerButton.addEventListener('click', () => {
+        getMachineChoise();
+        let idPlayer = playerButton.id;
+          if (idPlayer === machineChoise) {
+            output = `It's a <b>tie</b> no one wins. the machine choose <b>${machineChoise}</b>`;
+          }else if ((idPlayer === 'rock' && machineChoise === 'scissors')
+          || (idPlayer === 'paper' && machineChoise === 'rock')
+          || (idPlayer === 'scissors' && machineChoise === 'paper')) {
+            output = `You <b>win</b>! this round. The machine choose <b>${machineChoise}</b>`;
+            playerPoint += 1;
+          }else {
+            output = `the machine choose <b>${machineChoise}</b> so you <b>loose</b> this round`;
+            machinePoint += 1;
+          };
+          
+        WINNER.innerHTML = `${output}. The marker is: MACHINE: ${machinePoint}, YOU: ${playerPoint} `;    
+
+        });
+        
     }); 
+
+
+
   });
